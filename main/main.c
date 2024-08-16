@@ -16,23 +16,20 @@
 #define BUTTON1_PIN 2        //GPIO2
 #define BUTTON2_PIN 3        //GPIO3
 
-static const char *TAG = "BUTTON TEST: ";   //for Log messages
+static const char *TAG = "BUTTON TEST: ";
 
-//queue handle
-static QueueHandle_t gpio_evt_queue = NULL;                 //queue to handle gpio events
+static QueueHandle_t gpio_evt_queue = NULL;
 
-static void IRAM_ATTR gpio_isr_handler(void* arg)   
-{
+static void IRAM_ATTR gpio_isr_handler(void* arg){
     
 }
 
-void buttonTask(void *pvpameters)
-{
+void buttonTask(void *pvpameters){
+
     while (true)
     {
-        /* code */
+            
     }
-    
 }
 
 void app_main(void)
@@ -51,11 +48,9 @@ void app_main(void)
     gpio_set_level(LED2_PIN, 0);                            //turn off led2
     gpio_set_level(LED3_PIN, 0);                            //turn off led3
 
-    //initialize button
     gpio_reset_pin(BUTTON1_PIN);                   //select BUTTON_PIN as GPIO
     gpio_set_direction(BUTTON1_PIN, GPIO_MODE_INPUT);    //set as input
     gpio_pullup_en(BUTTON1_PIN);                         //enable pull-up
-    // gpio_pulldown_dis(BUTTON1_PIN);                      //disable pull-down
     gpio_set_intr_type(BUTTON1_PIN, GPIO_INTR_NEGEDGE);  //interrupt on negative edge
 
     gpio_evt_queue  = xQueueCreate(1, sizeof(uint32_t));         //create queue to handle gpio event from ISR
@@ -70,6 +65,7 @@ void app_main(void)
         vTaskDelay(pdMS_TO_TICKS(500));             //delay 500ms
         gpio_set_level(LED3_PIN, 0);                //turn off led3
         vTaskDelay(pdMS_TO_TICKS(500));             //delay 500ms
+
     }
 
 }

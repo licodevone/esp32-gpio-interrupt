@@ -1,0 +1,20 @@
+//queue handle
+static QueueHandle_t gpio_evt_queue = NULL;                 //queue to handle gpio events
+
+static void IRAM_ATTR gpio_isr_handler(void* arg)   
+{
+    uint32_t gpio_num = (uint32_t) arg;                    //get the GPIO number
+    xQueueSendFromISR(gpio_evt_queue , &gpio_num, NULL); //send the GPIO number to the queue
+}
+
+void buttonTask(void *pvpameters)
+{
+     uint32_t gpio_num;                  //gpio number variable
+
+    while (true)
+    {
+        xQueueReceive(gpio_evt_queue, &gpio_num, portMAX_DELAY);        //wait for gpio event from ISR
+        ESP_LOGI(TAG, "GPIO[%li] intr \n", gpio_num);                   //LOG the GPIO number       
+    }
+    
+}
